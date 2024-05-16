@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Log;
+
 use GuzzleHttp\Client;
 
 class WhatsAppService
@@ -37,7 +39,7 @@ class WhatsAppService
             ],
         ]);
 
-        dump($response);
+        Log::info('Response: ', ['response' => (string) $response->getBody()]);
 
         return json_decode($response->getBody(), true);
     }
