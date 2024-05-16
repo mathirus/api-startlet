@@ -49,6 +49,22 @@ return [
     |                    "custom", "stack"
     |
     */
+
+    'channels' => [
+        'stack' => [
+            'driver' => 'stack',
+            'channels' => ['single', 'stdout'],
+        ],
+        'stdout' => [
+            'driver' => 'monolog',
+            'handler' => StreamHandler::class,
+            'formatter' => env('LOG_STDOUT_FORMATTER'),
+            'with' => [
+                'stream' => 'php://stdout',
+            ],
+        ],
+    ],
+
     /* 
         'channels' => [
             'stack' => [
