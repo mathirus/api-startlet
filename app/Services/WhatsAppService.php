@@ -37,6 +37,8 @@ class WhatsAppService
             ],
         ]);
 
+        dump($response);
+
         return json_decode($response->getBody(), true);
     }
 
