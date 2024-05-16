@@ -39,8 +39,6 @@ class WhatsAppService
             ],
         ]);
 
-        Log::info('Response: ', ['response' => (string) $response->getBody()]);
-
         return json_decode($response->getBody(), true);
     }
 

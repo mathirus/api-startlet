@@ -22,6 +22,8 @@ class WhatsAppController extends Controller
 
         $response = $this->whatsappService->sendMessage($to, $message);
 
+        dump($response);
+
         return response()->json($response);
     }
 }
