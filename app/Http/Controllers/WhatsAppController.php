@@ -55,7 +55,7 @@ class WhatsAppController extends Controller
         $message = $bodyContent['entry'][0]['changes'][0]['value']['messages'][0]['text']['body'];
         $phone = $bodyContent['entry'][0]['changes'][0]['value']['messages'][0]['from'];
 
-        if ($message) {
+        if ($message && $phone) {
             $this->whatsappService->sendMessage($phone, $message);
         }
 
