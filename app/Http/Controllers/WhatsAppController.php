@@ -61,6 +61,8 @@ class WhatsAppController extends Controller
         $bodyContent = json_decode($request->getContent(), true);
         $value = $bodyContent['entry'][0]['changes'][0]['value']['messages'][0]['text'];
 
+        \Log::info('Verification request:', ['data' => $value]);
+
         return response()->json(['success' => true, 'data' => $value], 200);
     }
 }
