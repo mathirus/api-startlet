@@ -15,12 +15,11 @@ class WhatsAppController extends Controller
         $this->whatsappService = $whatsappService;
     }
 
-    public function initialMessage(SendMessageWhatsAppRequest $request)
+    public function initialMessage(Request $request)
     {
         $to = $request->input('to');
-        $message = $request->input('message');
 
-        $response = $this->whatsappService->initialMessage($to, $message);
+        $response = $this->whatsappService->initialMessage($to);
 
         return response()->json($response);
     }
