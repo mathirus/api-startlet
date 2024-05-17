@@ -42,7 +42,7 @@ class WhatsAppService
         return json_decode($response->getBody(), true);
     }
 
-    public function sendMessageResponse()
+    public function sendDefaultMessage()
     {
         $response = $this->client->post('', [
             'json' => [
@@ -58,7 +58,7 @@ class WhatsAppService
         return json_decode($response->getBody(), true);
     }
 
-    public function initialMessage($to)
+    public function templateMessage($to)
     {
         $response = $this->client->post('', [
             'json' => [

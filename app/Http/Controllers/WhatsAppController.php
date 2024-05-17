@@ -19,7 +19,7 @@ class WhatsAppController extends Controller
     {
         $to = $request->input('to');
 
-        $response = $this->whatsappService->initialMessage($to);
+        $response = $this->whatsappService->templateMessage($to);
 
         return response()->json($response);
     }
@@ -30,13 +30,6 @@ class WhatsAppController extends Controller
         $message = $request->input('message');
 
         $response = $this->whatsappService->sendMessage($to, $message);
-
-        return response()->json($response);
-    }
-
-    public function returnMessage(Request $request)
-    {
-        $response = $this->whatsappService->returnMessage();
 
         return response()->json($response);
     }
@@ -59,12 +52,21 @@ class WhatsAppController extends Controller
     public function verifyPost(Request $request)
     {
         $bodyContent = json_decode($request->getContent(), true);
-        $value = $bodyContent['entry'][0]['changes'][0]['value']['messages'][0]['text'];
+        $message = $bodyContent['entry'][0]['changes'][0]['value']['messages'][0]['text']['body'];
+        $phone = $bodyContent['entry'][0]['changes'][0]['value']['messages'][0]['from'];
 
-        if ($value) {
-            $this->whatsappService->sendMessageResponse();
+        if ($message) {
+            $this->whatsappService->sendMessage($phone, $message);
         }
 
-        return response()->json(['success' => true, 'data' => $value], 200);
+        return response()->json(['success' => true], 200);
+    }
+
+
+    public function returnMessage(Request $request)
+    {
+        $response = $this->whatsappService->returnMessage();
+
+        return response()->json($response);
     }
 }
