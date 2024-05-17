@@ -58,4 +58,21 @@ class WhatsAppService
 
         return json_decode($response->getBody(), true);
     }
+
+    public function returnMessage()
+    {
+        $response = $this->client->post('', [
+            'json' => [
+                'messaging_product' => 'whatsapp',
+                'to' => 54261152797321,
+                'type' => 'template',
+                'template' => [
+                    'name' => 'hell_world',
+                    'code' => 'en_US'
+                ],
+            ],
+        ]);
+
+        return json_decode($response->getBody(), true);
+    }
 }

@@ -15,6 +15,16 @@ class WhatsAppController extends Controller
         $this->whatsappService = $whatsappService;
     }
 
+    public function initialMessage(SendMessageWhatsAppRequest $request)
+    {
+        $to = $request->input('to');
+        $message = $request->input('message');
+
+        $response = $this->whatsappService->initialMessage($to, $message);
+
+        return response()->json($response);
+    }
+
     public function sendMessage(SendMessageWhatsAppRequest $request)
     {
         $to = $request->input('to');
@@ -22,7 +32,12 @@ class WhatsAppController extends Controller
 
         $response = $this->whatsappService->sendMessage($to, $message);
 
-        dump($response);
+        return response()->json($response);
+    }
+
+    public function returnMessage(Request $request)
+    {
+        $response = $this->whatsappService->returnMessage();
 
         return response()->json($response);
     }
