@@ -55,4 +55,12 @@ class WhatsAppController extends Controller
             return response('Verification failed', 403);
         }
     }
+
+    public function verifyPost(Request $request)
+    {
+        $bodyContent = json_decode($request->getContent(), true);
+        $value = $bodyContent['entry'][0]['changes'][0]['value']['messages'][0]['text'];
+
+        return response()->json(['success' => true, 'data' => $value], 200);
+    }
 }
