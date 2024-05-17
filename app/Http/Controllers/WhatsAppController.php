@@ -40,4 +40,17 @@ class WhatsAppController extends Controller
 
         return response()->json($response);
     }
+
+    public function verify(Request $request)
+    {
+        $mode = $request->query('hub.mode');
+        $token = $request->query('hub.verify_token');
+        $challenge = $request->query('hub.challenge');
+
+        if ($mode && $token === 'startletApi123!') {
+            return response($challenge, 200);
+        } else {
+            return response('Verification failed', 403);
+        }
+    }
 }
