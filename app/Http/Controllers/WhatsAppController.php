@@ -43,9 +43,11 @@ class WhatsAppController extends Controller
 
     public function verify(Request $request)
     {
-        $mode = $request->query('hub.mode');
-        $token = $request->query('hub.verify_token');
-        $challenge = $request->query('hub.challenge');
+        $allParams = $request->all();
+
+        $mode = $allParams['hub_mode'] ?? null;
+        $token = $allParams['hub_verify_token'] ?? null;
+        $challenge = $allParams['hub_challenge'] ?? null;
 
         if ($mode && $token === 'startletApi123!') {
             return response($challenge, 200);
