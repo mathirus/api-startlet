@@ -42,6 +42,22 @@ class WhatsAppService
         return json_decode($response->getBody(), true);
     }
 
+    public function sendMessageResponse()
+    {
+        $response = $this->client->post('', [
+            'json' => [
+                'messaging_product' => 'whatsapp',
+                'to' => 54261152797321,
+                'type' => 'text',
+                'text' => [
+                    'body' => "BEEEEEHHH BEEEHHHH",
+                ],
+            ],
+        ]);
+
+        return json_decode($response->getBody(), true);
+    }
+
     public function initialMessage($to)
     {
         $response = $this->client->post('', [
