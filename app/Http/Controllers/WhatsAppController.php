@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SendMessageWhatsAppRequest;
 use App\Services\WhatsAppService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class WhatsAppController extends Controller
 {
@@ -51,12 +52,17 @@ class WhatsAppController extends Controller
 
     public function verifyPost(Request $request)
     {
+        // Obtener el contenido del cuerpo de la solicitud
         $bodyContent = json_decode($request->getContent(), true);
-        $message = $bodyContent['entry'][0]['changes'][0]['value']['messages'][0]['text']['body'];
-        $phone = $bodyContent['entry'][0]['changes'][0]['value']['messages'][0]['from'];
 
-        dd($bodyContent);
+        // Registrar el contenido en el log de Laravel
+        Log::info('Webhook Received: ', $bodyContent);
 
+        // Obtener el mensaje y el número de teléfono del contenido
+        $message = $bodyContent['entry'][0]['changes'][0]['value']['messages'][0]['text']['body'] ?? null;
+        $phone = $bodyContent['entry'][0]['changes'][0]['value']['messages'][0]['from'] ?? null;
+
+        // Verificar si el mensaje y el teléfono están presentes
         if ($message && $phone) {
             $this->whatsappService->sendMessage($phone, $message);
         }
