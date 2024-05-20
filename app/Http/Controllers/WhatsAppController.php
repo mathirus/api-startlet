@@ -55,8 +55,11 @@ class WhatsAppController extends Controller
         // Obtener el contenido del cuerpo de la solicitud
         $bodyContent = json_decode($request->getContent(), true);
 
-        // Registrar el contenido en el log de Laravel
-        Log::info('Webhook Received: ', $bodyContent);
+        // Dump the content to the screen (for debugging purposes)
+        dump($bodyContent);
+
+        // Write the content to a file
+        file_put_contents(storage_path('logs/webhook.log'), print_r($bodyContent, true), FILE_APPEND);
 
         // Obtener el mensaje y el número de teléfono del contenido
         $message = $bodyContent['entry'][0]['changes'][0]['value']['messages'][0]['text']['body'] ?? null;
