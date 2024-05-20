@@ -67,7 +67,7 @@ class WhatsAppController extends Controller
         $number = (int) $numberString;
 
         # if ($phone == "5492612797321") {
-        $response = $this->whatsappService->sendMessage($number, $message);
+        $response = $this->whatsappService->sendMessage($phone, $message);
 
         return response()->json(['success' => true], 200);
     }
