@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SendMessageWhatsAppRequest;
 use App\Services\WhatsAppService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class WhatsAppController extends Controller
 {
@@ -16,7 +15,7 @@ class WhatsAppController extends Controller
         $this->whatsappService = $whatsappService;
     }
 
-    public function initialMessage(Request $request)
+    public function templateMessage(Request $request)
     {
         $to = $request->input('to');
 
@@ -35,7 +34,14 @@ class WhatsAppController extends Controller
         return response()->json($response);
     }
 
-    public function verify(Request $request)
+    public function returnMessage(Request $request)
+    {
+        $response = $this->whatsappService->returnMessage();
+
+        return response()->json($response);
+    }
+
+    public function verifyWebhook(Request $request)
     {
         $allParams = $request->all();
 
@@ -50,34 +56,19 @@ class WhatsAppController extends Controller
         }
     }
 
-    public function verifyPost(Request $request)
+    public function automaticResponse(Request $request)
     {
-        // Obtener el contenido del cuerpo de la solicitud
         $bodyContent = json_decode($request->getContent(), true);
+        $message = $bodyContent['entry'][0]['changes'][0]['value']['messages'][0]['text']['body'];
+        $phone = $bodyContent['entry'][0]['changes'][0]['value']['messages'][0]['from'];
+        $number = $bodyContent['entry'][0]['changes'][0]['value']['contacts'][0]['wa_id'];
 
-        // Dump the content to the screen (for debugging purposes)
-        dump($bodyContent);
-
-        // Write the content to a file
-        file_put_contents(storage_path('logs/webhook.log'), print_r($bodyContent, true), FILE_APPEND);
-
-        // Obtener el mensaje y el número de teléfono del contenido
-        $message = $bodyContent['entry'][0]['changes'][0]['value']['messages'][0]['text']['body'] ?? null;
-        $phone = $bodyContent['entry'][0]['changes'][0]['value']['messages'][0]['from'] ?? null;
-
-        // Verificar si el mensaje y el teléfono están presentes
-        if ($message && $phone) {
+        if ($phone == "5492612797321") {
             $this->whatsappService->sendMessage($phone, $message);
+        } else {
+            $this->whatsappService->sendMessage($number, $message);
         }
 
         return response()->json(['success' => true], 200);
-    }
-
-
-    public function returnMessage(Request $request)
-    {
-        $response = $this->whatsappService->returnMessage();
-
-        return response()->json($response);
     }
 }

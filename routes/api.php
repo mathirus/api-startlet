@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/initial-message', [WhatsAppController::class, 'initialMessage']);
+Route::post('/initial-message', [WhatsAppController::class, 'templateMessage']);
 Route::post('/send-message', [WhatsAppController::class, 'sendMessage']);
 Route::post('/return-message', [WhatsAppController::class, 'returnMessage']);
-Route::get('/verify-webhook', [WhatsAppController::class, 'verify']);
-Route::post('/verify-webhook', [WhatsAppController::class, 'verifyPost']);
+Route::get('/verify-webhook', [WhatsAppController::class, 'verifyWebhook']);
+Route::post('/verify-webhook', [WhatsAppController::class, 'automaticResponse']);
